@@ -1,11 +1,28 @@
 import { auth } from "@/auth";
 import Image from "next/image";
 
+import {decode,encode} from "next-auth/jwt"
+import { cookies } from "next/headers";
+
 export default async function Home() {
 
   const session=await auth();
   const user=session?.user;
   // here u can apply if authenticated or not to show authenticated pages or not
+
+  /* For JWT working if needed
+
+  const cookie=(await cookies()).get('authjs.session-token');
+  console.log(
+    await decode({
+      token: cookie?.value!,
+      salt: cookie?.name!,
+      secret: process.env.AUTH_SECRET!,
+    })
+  );
+
+  */
+
 
 
   return (

@@ -18,4 +18,9 @@ const loginHandler=async (email: string, password: string) => {
 
 }
 
+const GoogleLoginHandler=async () => {
+    await signIn('google');
+}
+
 export default loginHandler
+export {GoogleLoginHandler}

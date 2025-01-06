@@ -19,6 +19,7 @@ import { auth, signIn } from '@/auth';
 
 import LoginForm from '@/components/client/form';
 import { redirect } from 'next/navigation';
+import { GoogleLoginHandler } from '@/actions/login';
 
 
 
@@ -42,7 +43,7 @@ const Page = async () => {
                 </CardContent>
                 <CardFooter className='flex flex-col gap-2'>
                     <span>OR </span>
-                    <form action="">
+                    <form action={GoogleLoginHandler}>
                         <Button type='submit' variant={'outline'}>Login with Google <FaGoogle />
                         </Button>
                     </form>

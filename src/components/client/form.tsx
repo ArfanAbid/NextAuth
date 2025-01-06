@@ -12,7 +12,8 @@ const LoginForm = () => {
     const router=useRouter();
 
     return <form
-        action={async (formData) =>{
+        action={async (formData) => {
+            
 
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
