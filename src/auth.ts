@@ -2,6 +2,7 @@ import NextAuth, { CredentialsSignin } from "next-auth"
 import GoogleProvider from "next-auth/providers/google" 
 import CredentialsProvider from "next-auth/providers/credentials"
 import { User } from "./models/userModel";
+import { connectToDatabase } from "./lib/utils";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -24,15 +25,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         // Connection of Database here
+        await connectToDatabase();
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).select("+password");
+
         if (!user || !user.password) {  // !user.password is for if login with google id 
-            throw new CredentialsSignin("Invalid email or password");
+            throw new CredentialsSignin({cause:"Invalid email or password"});
         }
         
         const isPasswordCorrect = await user.comparePassword(password);
         if (!isPasswordCorrect) {
-            throw new CredentialsSignin("Invalid password");
+            throw new CredentialsSignin({cause:"Invalid password"});
         }
 
         return {
@@ -44,4 +47,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
 })
